@@ -1,0 +1,1941 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Interview Codex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0e14;
+        --panel: #111826;
+        --panel-2: #0d131e;
+        --border: #232c3d;
+        --border-soft: #1a2230;
+        --text: #e7edf5;
+        --text-dim: #8b98ac;
+        --text-faint: #5b6678;
+        --cyan: #61dafb;
+        --basic: #34e0a1;
+        --basic-dim: #0f3d2e;
+        --inter: #ffc857;
+        --inter-dim: #4a3a10;
+        --adv: #e879f9;
+        --adv-dim: #3d1a42;
+        --code-bg: #0d1420;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background:
+          radial-gradient(
+            circle at 12% 8%,
+            rgba(97, 218, 251, 0.06),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 88% 92%,
+            rgba(232, 121, 249, 0.05),
+            transparent 40%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        line-height: 1.65;
+        padding-bottom: 80px;
+      }
+      h1,
+      h2,
+      h3,
+      .mono-head {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      code,
+      .mono,
+      pre {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* ===== HERO ===== */
+      .hero {
+        padding: 72px 8vw 48px;
+        border-bottom: 1px solid var(--border-soft);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        color: var(--cyan);
+        border: 1px solid rgba(97, 218, 251, 0.35);
+        background: rgba(97, 218, 251, 0.06);
+        padding: 6px 14px;
+        border-radius: 999px;
+        margin-bottom: 24px;
+        letter-spacing: 0.03em;
+      }
+      .hero-tag::before {
+        content: "●";
+        color: var(--basic);
+        font-size: 9px;
+      }
+      .hero h1 {
+        font-size: clamp(34px, 5.2vw, 58px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        max-width: 16ch;
+        background: linear-gradient(
+          100deg,
+          #ffffff 20%,
+          var(--cyan) 60%,
+          var(--adv) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero p {
+        margin-top: 20px;
+        max-width: 620px;
+        color: var(--text-dim);
+        font-size: 17px;
+      }
+      .hero-stats {
+        display: flex;
+        gap: 0;
+        margin-top: 40px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        max-width: 620px;
+      }
+      .hero-stats div {
+        flex: 1;
+        padding: 16px 20px;
+        border-right: 1px solid var(--border);
+        background: var(--panel);
+      }
+      .hero-stats div:last-child {
+        border-right: none;
+      }
+      .hero-stats .num {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+      }
+      .hero-stats .lbl {
+        font-size: 12px;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 2px;
+      }
+      .stat-basic .num {
+        color: var(--basic);
+      }
+      .stat-inter .num {
+        color: var(--inter);
+      }
+      .stat-adv .num {
+        color: var(--adv);
+      }
+
+      /* ===== STICKY NAV ===== */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(10, 14, 20, 0.88);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-soft);
+        padding: 14px 8vw;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navbar .brand {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        color: var(--text-dim);
+        margin-right: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .navbar .brand b {
+        color: var(--cyan);
+        font-weight: 700;
+      }
+      .nav-pill {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        padding: 7px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        transition: all 0.15s ease;
+      }
+      .nav-pill:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
+      .np-basic:hover {
+        border-color: var(--basic);
+        color: var(--basic);
+      }
+      .np-inter:hover {
+        border-color: var(--inter);
+        color: var(--inter);
+      }
+      .np-adv:hover {
+        border-color: var(--adv);
+        color: var(--adv);
+      }
+
+      /* ===== SECTIONS ===== */
+      .section {
+        padding: 56px 8vw 16px;
+      }
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+      .section-head h2 {
+        font-size: 30px;
+        letter-spacing: -0.01em;
+      }
+      .section-sub {
+        color: var(--text-faint);
+        font-size: 14px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .section-rule {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-color, var(--cyan)),
+          transparent 60%
+        );
+        margin: 18px 0 40px;
+      }
+      .sec-basic .section-rule {
+        --accent-color: var(--basic);
+      }
+      .sec-inter .section-rule {
+        --accent-color: var(--inter);
+      }
+      .sec-adv .section-rule {
+        --accent-color: var(--adv);
+      }
+      .sec-basic h2 {
+        color: var(--basic);
+      }
+      .sec-inter h2 {
+        color: var(--inter);
+      }
+      .sec-adv h2 {
+        color: var(--adv);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 26px;
+      }
+
+      /* ===== TOPIC CARD (code editor tab style) ===== */
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .card-basic {
+        border-left: 3px solid var(--basic);
+      }
+      .card-inter {
+        border-left: 3px solid var(--inter);
+      }
+      .card-adv {
+        border-left: 3px solid var(--adv);
+      }
+
+      .card-tab {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        background: var(--panel-2);
+        border-bottom: 1px solid var(--border);
+      }
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dots span {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        display: inline-block;
+        background: var(--border);
+      }
+      .filename {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        color: var(--text-dim);
+      }
+      .filename b {
+        color: var(--text);
+      }
+      .ext-basic {
+        color: var(--basic);
+      }
+      .ext-inter {
+        color: var(--inter);
+      }
+      .ext-adv {
+        color: var(--adv);
+      }
+      .topic-num {
+        margin-left: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--text-faint);
+        border: 1px solid var(--border);
+        padding: 3px 9px;
+        border-radius: 6px;
+      }
+
+      .card-body {
+        padding: 24px 26px 26px;
+      }
+      .card-body h3 {
+        font-size: 22px;
+        margin-bottom: 14px;
+        letter-spacing: -0.01em;
+      }
+
+      .field {
+        margin-bottom: 16px;
+      }
+      .field-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-faint);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .field-label::before {
+        content: "//";
+        opacity: 0.5;
+      }
+      .field-text {
+        color: var(--text-dim);
+        font-size: 15px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--border-soft);
+        border-radius: 8px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-top: 6px;
+        color: #c9d6e8;
+      }
+      pre .kw {
+        color: #ff7ab6;
+      }
+      pre .fn {
+        color: #61dafb;
+      }
+      pre .str {
+        color: #a8e063;
+      }
+      pre .cm {
+        color: #5b6678;
+        font-style: italic;
+      }
+      pre .tag {
+        color: #ffc857;
+      }
+
+      /* ===== COMPARISON SECTION ===== */
+      .compare-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 32px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 560px;
+        background: var(--panel);
+      }
+      thead th {
+        background: var(--panel-2);
+        text-align: left;
+        padding: 14px 18px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.01em;
+        border-bottom: 1px solid var(--border);
+      }
+      thead th:first-child {
+        color: var(--cyan);
+      }
+      tbody td {
+        padding: 13px 18px;
+        border-bottom: 1px solid var(--border-soft);
+        font-size: 13.5px;
+        color: var(--text-dim);
+        vertical-align: top;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      tbody td:first-child {
+        color: var(--text);
+        font-weight: 600;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+      }
+      tbody tr:hover td {
+        background: rgba(97, 218, 251, 0.03);
+      }
+
+      .compare-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        margin-top: 36px;
+      }
+      .compare-title .vs-badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--adv);
+        border: 1px solid rgba(232, 121, 249, 0.35);
+        background: rgba(232, 121, 249, 0.06);
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+      .compare-title h4 {
+        font-size: 19px;
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      footer {
+        padding: 48px 8vw;
+        text-align: center;
+        color: var(--text-faint);
+        font-size: 13px;
+        font-family: "JetBrains Mono", monospace;
+        border-top: 1px solid var(--border-soft);
+        margin-top: 40px;
+      }
+      footer span {
+        color: var(--cyan);
+      }
+
+      @media (max-width: 640px) {
+        .hero {
+          padding: 52px 6vw 36px;
+        }
+        .section {
+          padding: 42px 6vw 16px;
+        }
+        .hero-stats {
+          flex-direction: column;
+        }
+        .hero-stats div {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .hero-stats div:last-child {
+          border-bottom: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <div class="hero-tag">interview_prep.exe — running</div>
+      <h1>React Interview Codex</h1>
+      <p>
+        A single-file reference spanning JSX to Fiber internals — built to take
+        you from "what is a hook" to defending your architecture decisions in a
+        system-design round. Every topic follows the same contract: definition,
+        the problem it solves, and a working example.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-basic">
+          <div class="num">08</div>
+          <div class="lbl">Basic topics</div>
+        </div>
+        <div class="stat-inter">
+          <div class="num">07</div>
+          <div class="lbl">Intermediate topics</div>
+        </div>
+        <div class="stat-adv">
+          <div class="num">09</div>
+          <div class="lbl">Advanced topics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar">
+      <div class="brand"><b>&lt;/&gt;</b> react-codex.html</div>
+      <a class="nav-pill np-basic" href="#basics">01 basics</a>
+      <a class="nav-pill np-inter" href="#intermediate">02 intermediate</a>
+      <a class="nav-pill np-adv" href="#advanced">03 advanced</a>
+      <a class="nav-pill" href="#compare">04 comparisons</a>
+    </div>
+
+    <!-- ================= BASICS ================= -->
+    <section class="section sec-basic" id="basics">
+      <div class="section-head">
+        <h2>01 · Foundations</h2>
+        <span class="section-sub"
+          >// the vocabulary every round assumes you already have</span
+        >
+      </div>
+      <div class="section-rule"></div>
+      <div class="grid">
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>01-jsx</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>JSX (JavaScript XML)</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A syntax extension that lets you write HTML-like markup directly
+                inside JavaScript. It is not a template language — it compiles
+                (via Babel) into nested <code>React.createElement()</code> calls
+                that return plain JS objects.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Before JSX, UI trees were built by hand-nesting
+                <code>createElement</code> calls, which was unreadable at scale.
+                JSX keeps markup and the logic that drives it in one file, so
+                structure and behavior stay visually and mentally coupled.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> <span class="fn">Greeting</span> = ({ name }) =&gt; {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">h1</span> className=<span class="str">"title"</span>&gt;
+      Hello, {name}! <span class="cm">{/* JS expression inline */}</span>
+    &lt;/<span class="tag">h1</span>&gt;
+  );
+};</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>02-components</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>Components (Functional vs Class)</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A component is a self-contained, reusable function or class that
+                returns JSX. Functional components are plain JS functions using
+                Hooks for state/lifecycle; class components extend
+                <code>React.Component</code> and use <code>this.state</code> and
+                lifecycle methods.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Components let you break a UI into independent, testable pieces
+                and compose them like building blocks, instead of one monolithic
+                template. Functional components + Hooks (post-2019) removed the
+                need for <code>this</code> binding and made logic reuse far
+                simpler than class-based mixins/HOC chains.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="cm">// Functional (modern standard)</span>
+<span class="kw">function</span> <span class="fn">Counter</span>() {
+  <span class="kw">const</span> [count, setCount] = useState(0);
+  <span class="kw">return</span> &lt;<span class="tag">button</span> onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;{count}&lt;/<span class="tag">button</span>&gt;;
+}
+
+<span class="cm">// Class (legacy / still asked in interviews)</span>
+<span class="kw">class</span> Counter <span class="kw">extends</span> React.Component {
+  state = { count: 0 };
+  render() { <span class="kw">return</span> &lt;<span class="tag">button</span> onClick={() =&gt; this.setState({count: this.state.count+1})}&gt;{this.state.count}&lt;/<span class="tag">button</span>&gt;; }
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>03-props</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>Props</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                Read-only inputs passed from a parent component to a child,
+                similar to function arguments. Props flow in one direction only
+                — top to bottom (unidirectional data flow).
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Props let a component stay generic and configurable instead of
+                hardcoding data, so the same <code>Button</code> or
+                <code>Card</code> component can render differently in every
+                context it's used. Immutability of props keeps data flow
+                predictable and easy to trace during debugging.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">UserCard</span>({ name, role }) {
+  <span class="kw">return</span> &lt;<span class="tag">p</span>&gt;{name} — {role}&lt;/<span class="tag">p</span>&gt;;
+}
+<span class="cm">// Parent passes data down:</span>
+&lt;<span class="tag">UserCard</span> name=<span class="str">"Chaithanya"</span> role=<span class="str">"Founder"</span> /&gt;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>04-usestate</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>State &amp; useState</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                State is data local to a component that can change over time.
+                <code>useState</code> is the Hook that adds state to a
+                functional component, returning a value and a setter function.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Regular JS variables don't survive re-renders and mutating them
+                doesn't trigger a re-render at all. <code>useState</code> gives
+                React a value it tracks internally — calling the setter both
+                persists the new value across renders and schedules a re-render
+                so the UI stays in sync with data.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> [quantity, setQuantity] = useState(1);
+<span class="cm">// Functional update avoids stale-closure bugs</span>
+setQuantity(prev =&gt; prev + 1);</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>05-events</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>Event Handling</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                React wraps native DOM events in a cross-browser wrapper called
+                a <code>SyntheticEvent</code>, and events are attached using
+                camelCase props like <code>onClick</code>,
+                <code>onChange</code>.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                SyntheticEvents normalize inconsistent browser event APIs into
+                one predictable interface, and React batches/pools them for
+                performance. It also lets React attach a single listener at the
+                root and delegate internally, rather than one raw listener per
+                DOM node.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre>&lt;<span class="tag">input</span>
+  onChange={(e) =&gt; setEmail(e.target.value)}
+  onKeyDown={(e) =&gt; { <span class="kw">if</span> (e.key === <span class="str">"Enter"</span>) submit(); }}
+/&gt;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>06-conditional</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>Conditional Rendering</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                Showing different UI based on state or props, using plain
+                JavaScript operators (ternary, <code>&amp;&amp;</code>, early
+                return) instead of a special template directive.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Because JSX is "just JavaScript", React deliberately avoids
+                inventing template syntax like <code>v-if</code>. This keeps the
+                mental model small — anything you can do in JS, you can do in
+                JSX — but interviewers probe this because
+                <code>&amp;&amp;</code> with a falsy <code>0</code> is a classic
+                bug (renders a stray "0").
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre>{isLoggedIn ? &lt;<span class="tag">Dashboard</span> /&gt; : &lt;<span class="tag">LoginForm</span> /&gt;}
+{cartItems.length &gt; 0 &amp;&amp; &lt;<span class="tag">CartBadge</span> count={cartItems.length} /&gt;}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>07-lists-keys</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>Lists and Keys</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                Rendering an array of data with <code>.map()</code>, where each
+                rendered element needs a stable, unique <code>key</code> prop.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Keys give React's diffing algorithm an identity for each item
+                across renders, so it can detect "this item moved" instead of
+                "everything after index 2 changed" — avoiding unnecessary
+                unmount/remount cycles and preserving component state (like
+                input focus) correctly. Using array index as a key breaks this
+                when the list is reordered or filtered.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre>{todos.map(todo =&gt; (
+  &lt;<span class="tag">TodoItem</span> key={todo.id} text={todo.text} /&gt;
+))}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-basic">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>08-forms</b>.<span class="ext-basic">jsx</span>
+            </div>
+            <div class="topic-num">BASIC</div>
+          </div>
+          <div class="card-body">
+            <h3>Forms &amp; Controlled Components</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A controlled component's form value is driven entirely by React
+                state — the input's <code>value</code> comes from state, and
+                every keystroke updates that state via <code>onChange</code>.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Without control, the DOM holds its own source of truth for the
+                input value, which drifts out of sync with your component's
+                state — making validation, reset, and conditional logic
+                unreliable. Making React the single source of truth lets you
+                validate, format, or block input on every keystroke.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> [email, setEmail] = useState(<span class="str">""</span>);
+&lt;<span class="tag">input</span> value={email} onChange={(e) =&gt; setEmail(e.target.value)} /&gt;</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INTERMEDIATE ================= -->
+    <section class="section sec-inter" id="intermediate">
+      <div class="section-head">
+        <h2>02 · Intermediate</h2>
+        <span class="section-sub"
+          >// where "I've used React" turns into "I understand React"</span
+        >
+      </div>
+      <div class="section-rule"></div>
+      <div class="grid">
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>09-useeffect</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>useEffect</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A Hook that runs "side effects" — code that reaches outside the
+                component (fetching data, subscriptions, timers, manual DOM
+                work) — after React commits changes to the DOM.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Rendering must stay a pure calculation of UI from state/props;
+                side effects don't belong in the render body because they can
+                run multiple times or in the wrong order.
+                <code>useEffect</code> gives side effects a dedicated,
+                controllable lifecycle stage, with a dependency array to decide
+                exactly when they re-run, and a cleanup function to prevent
+                leaks.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre>useEffect(() =&gt; {
+  <span class="kw">const</span> id = setInterval(tick, 1000);
+  <span class="kw">return</span> () =&gt; clearInterval(id); <span class="cm">// cleanup on unmount</span>
+}, []); <span class="cm">// empty array = run once on mount</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>10-useref</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>useRef</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A Hook returning a mutable <code>{`{ current }`}</code> object
+                that persists for the component's lifetime without causing a
+                re-render when mutated. Commonly used to hold direct DOM node
+                references.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Sometimes you need to keep a value across renders (a timer ID,
+                previous prop value, DOM node) but changing it shouldn't trigger
+                a re-render — <code>useState</code> would over-trigger renders
+                here. <code>useRef</code> is the escape hatch for imperative
+                access, like focusing an input or measuring an element's size.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> inputRef = useRef(<span class="kw">null</span>);
+useEffect(() =&gt; { inputRef.current.focus(); }, []);
+&lt;<span class="tag">input</span> ref={inputRef} /&gt;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>11-usecontext</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>useContext</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A Hook that reads a value from the nearest matching
+                <code>&lt;Context.Provider&gt;</code> above it in the tree,
+                without it being passed explicitly as a prop.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Passing data through 5-6 nested components that don't need it
+                themselves — just to reach a deeply nested child — is "prop
+                drilling" and makes refactors painful. Context lets any
+                descendant subscribe directly to shared data like theme, auth
+                user, or locale.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> ThemeContext = createContext(<span class="str">"light"</span>);
+<span class="cm">// Provider (ancestor)</span>
+&lt;<span class="tag">ThemeContext.Provider</span> value=<span class="str">"dark"</span>&gt;&lt;<span class="tag">App</span> /&gt;&lt;/<span class="tag">ThemeContext.Provider</span>&gt;
+<span class="cm">// Consumer (any descendant)</span>
+<span class="kw">const</span> theme = useContext(ThemeContext);</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>12-custom-hooks</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>Custom Hooks</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A JS function whose name starts with <code>use</code> and which
+                calls other Hooks internally, letting you extract and reuse
+                stateful logic across components.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Before Hooks, sharing stateful logic (e.g. "track window width")
+                meant Higher-Order Components or render props, both of which
+                added extra wrapper layers to the tree ("wrapper hell"). Custom
+                Hooks share logic without adding any component to the tree at
+                all.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">useWindowWidth</span>() {
+  <span class="kw">const</span> [width, setWidth] = useState(window.innerWidth);
+  useEffect(() =&gt; {
+    <span class="kw">const</span> onResize = () =&gt; setWidth(window.innerWidth);
+    window.addEventListener(<span class="str">"resize"</span>, onResize);
+    <span class="kw">return</span> () =&gt; window.removeEventListener(<span class="str">"resize"</span>, onResize);
+  }, []);
+  <span class="kw">return</span> width;
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>13-lifting-state</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>Lifting State Up</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                Moving shared state from a child component to their closest
+                common parent, which then passes it back down as props.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Two sibling components can't talk to each other directly since
+                data flow is one-directional. Lifting state to a shared ancestor
+                gives both siblings a single source of truth, keeping them in
+                sync without ad-hoc communication channels.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">Parent</span>() {
+  <span class="kw">const</span> [temp, setTemp] = useState(24);
+  <span class="kw">return</span> (&lt;&gt;
+    &lt;<span class="tag">CelsiusInput</span> value={temp} onChange={setTemp} /&gt;
+    &lt;<span class="tag">FahrenheitDisplay</span> celsius={temp} /&gt;
+  &lt;/&gt;);
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>14-composition</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>Component Composition (children prop)</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                Building complex UI by nesting components inside one another via
+                the special <code>children</code> prop, rather than through
+                configuration props alone.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                React deliberately favors composition over inheritance — instead
+                of subclassing a <code>Panel</code> component to customize it,
+                you wrap it around arbitrary content. This keeps components
+                flexible ("slots") and avoids deep, fragile inheritance
+                hierarchies.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">Card</span>({ children }) {
+  <span class="kw">return</span> &lt;<span class="tag">div</span> className=<span class="str">"card"</span>&gt;{children}&lt;/<span class="tag">div</span>&gt;;
+}
+&lt;<span class="tag">Card</span>&gt;&lt;<span class="tag">h2</span>&gt;Plan&lt;/<span class="tag">h2</span>&gt;&lt;<span class="tag">p</span>&gt;Pro tier&lt;/<span class="tag">p</span>&gt;&lt;/<span class="tag">Card</span>&gt;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-inter">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>15-error-boundaries</b>.<span class="ext-inter">jsx</span>
+            </div>
+            <div class="topic-num">INTER</div>
+          </div>
+          <div class="card-body">
+            <h3>Error Boundaries</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A class component implementing
+                <code>static getDerivedStateFromError()</code> and/or
+                <code>componentDidCatch()</code> that catches JS errors thrown
+                anywhere in its child tree during render and shows a fallback UI
+                instead of crashing the whole app. There is no Hook equivalent
+                yet.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                By default, one uncaught render error unmounts the entire React
+                tree, giving users a blank white screen. Error boundaries
+                contain the blast radius to just the failing subtree, so a
+                broken widget doesn't take down the whole page.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">class</span> ErrorBoundary <span class="kw">extends</span> React.Component {
+  state = { hasError: <span class="kw">false</span> };
+  <span class="kw">static</span> getDerivedStateFromError() { <span class="kw">return</span> { hasError: <span class="kw">true</span> }; }
+  render() {
+    <span class="kw">return</span> this.state.hasError ? &lt;<span class="tag">Fallback</span> /&gt; : this.props.children;
+  }
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ADVANCED ================= -->
+    <section class="section sec-adv" id="advanced">
+      <div class="section-head">
+        <h2>03 · Advanced &amp; Internals</h2>
+        <span class="section-sub"
+          >// system-design rounds and "how does React actually work"
+          questions</span
+        >
+      </div>
+      <div class="section-rule"></div>
+      <div class="grid">
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>16-usereducer</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>useReducer</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A Hook for managing state via a reducer function
+                <code>(state, action) =&gt; newState</code> — the same pattern
+                Redux popularized — dispatching actions instead of calling
+                setters directly.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                When state updates depend on multiple sub-values that change
+                together, or the next state depends on the previous one in
+                complex ways, scattered <code>useState</code> calls get hard to
+                reason about and prone to inconsistent intermediate states.
+                Centralizing "what changed" (action) and "how it changes"
+                (reducer) in one place makes transitions predictable and
+                testable in isolation.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">reducer</span>(state, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">"increment"</span>: <span class="kw">return</span> { count: state.count + 1 };
+    <span class="kw">default</span>: <span class="kw">throw new</span> Error();
+  }
+}
+<span class="kw">const</span> [state, dispatch] = useReducer(reducer, { count: 0 });
+dispatch({ type: <span class="str">"increment"</span> });</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>17-usememo</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>useMemo</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A Hook that caches (memoizes) the <em>result</em> of an
+                expensive calculation, recomputing it only when its dependencies
+                change.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Every re-render re-runs the whole function body by default,
+                including expensive calculations (sorting thousands of rows,
+                heavy math) that didn't need to change.
+                <code>useMemo</code> skips that recalculation when its inputs
+                are unchanged, trading a bit of memory for saved CPU work.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> sortedList = useMemo(
+  () =&gt; expensiveSort(items),
+  [items]
+);</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>18-usecallback</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>useCallback</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A Hook that memoizes a <em>function reference</em> itself,
+                returning the same function instance across renders unless its
+                dependencies change.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                In JS, a function defined inside a component body is a brand-new
+                object on every render — this breaks reference-equality checks
+                like <code>React.memo</code> on a child, causing it to re-render
+                even though "nothing really changed".
+                <code>useCallback</code> keeps the reference stable so memoized
+                children can actually skip re-rendering.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> handleAdd = useCallback(
+  (item) =&gt; setItems(prev =&gt; [...prev, item]),
+  [] <span class="cm">// stable reference, passed to a memoized child</span>
+);</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>19-react-memo</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>React.memo</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A higher-order component that wraps a component and skips its
+                re-render if its props are shallowly equal to the previous
+                render's props.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                By default, a parent re-rendering re-renders every child
+                regardless of whether that child's own props actually changed.
+                <code>React.memo</code> adds a props-comparison gate in front of
+                a component, useful for expensive "leaf" components (charts,
+                large lists) — but pointless (even counterproductive) on cheap
+                components, since the comparison itself has a cost.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> ProductRow = React.memo(<span class="kw">function</span> <span class="fn">ProductRow</span>({ product }) {
+  <span class="kw">return</span> &lt;<span class="tag">tr</span>&gt;&lt;<span class="tag">td</span>&gt;{product.name}&lt;/<span class="tag">td</span>&gt;&lt;/<span class="tag">tr</span>&gt;;
+});</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>20-hoc</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>Higher-Order Components (HOC)</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A function that takes a component and returns a new, enhanced
+                component — a pattern borrowed from functional programming's
+                higher-order functions.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                HOCs let you inject shared behavior — authentication checks,
+                logging, data-fetching — into many unrelated components without
+                duplicating that logic in each one. Custom Hooks now cover most
+                of these use cases more simply, so HOCs mainly appear in legacy
+                codebases and libraries like <code>react-redux</code>'s
+                <code>connect()</code>.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">withAuth</span>(Component) {
+  <span class="kw">return function</span> <span class="fn">Wrapped</span>(props) {
+    <span class="kw">const</span> user = useAuth();
+    <span class="kw">return</span> user ? &lt;<span class="tag">Component</span> {...props} /&gt; : &lt;<span class="tag">Redirect</span> to=<span class="str">"/login"</span> /&gt;;
+  };
+}
+<span class="kw">const</span> ProtectedDashboard = withAuth(Dashboard);</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>21-render-props</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>Render Props</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                A pattern where a component takes a function as a prop (often
+                called <code>render</code> or passed as <code>children</code>)
+                and calls it to determine what to render, sharing its internal
+                state with that function.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Like HOCs, render props solved cross-component logic sharing
+                before Hooks existed — a <code>&lt;Mouse&gt;</code> component
+                tracking cursor position could hand that data to any UI via a
+                function, without dictating what gets rendered. Mostly
+                superseded by custom Hooks today, but still shows up in library
+                APIs (e.g. React Router's older versions, Downshift).
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre>&lt;<span class="tag">DataFetcher</span> url=<span class="str">"/api/user"</span>&gt;
+  {(data, loading) =&gt; loading ? &lt;<span class="tag">Spinner</span> /&gt; : &lt;<span class="tag">Profile</span> data={data} /&gt;}
+&lt;/<span class="tag">DataFetcher</span>&gt;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>22-lazy-suspense</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>Code Splitting: React.lazy + Suspense</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                <code>React.lazy()</code> dynamically imports a component so
+                it's bundled into a separate chunk;
+                <code>&lt;Suspense&gt;</code> shows a fallback UI while that
+                chunk is still loading.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Shipping one giant JS bundle means users download code for
+                routes/features they may never open, slowing the initial load.
+                Code splitting loads only what's needed for the current view,
+                deferring the rest until it's actually requested — directly
+                improving Time to Interactive.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">const</span> Settings = React.lazy(() =&gt; import(<span class="str">"./Settings"</span>));
+&lt;<span class="tag">Suspense</span> fallback={&lt;<span class="tag">Spinner</span> /&gt;}&gt;
+  &lt;<span class="tag">Settings</span> /&gt;
+&lt;/<span class="tag">Suspense</span>&gt;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>23-portals</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>Portals</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                <code>ReactDOM.createPortal(child, domNode)</code> renders a
+                component's output into a DOM node outside its parent's DOM
+                hierarchy, while keeping it inside the same React component tree
+                (event bubbling and context still work normally).
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Elements like modals, tooltips, and dropdowns need to visually
+                escape a parent's <code>overflow:hidden</code> or low
+                <code>z-index</code> stacking context, but still behave like a
+                child in React's data flow. Portals solve exactly that split
+                between "visual DOM position" and "logical component position".
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="kw">function</span> <span class="fn">Modal</span>({ children }) {
+  <span class="kw">return</span> ReactDOM.createPortal(
+    &lt;<span class="tag">div</span> className=<span class="str">"modal"</span>&gt;{children}&lt;/<span class="tag">div</span>&gt;,
+    document.getElementById(<span class="str">"modal-root"</span>)
+  );
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-adv">
+          <div class="card-tab">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="filename">
+              <b>24-fiber</b>.<span class="ext-adv">jsx</span>
+            </div>
+            <div class="topic-num">ADV</div>
+          </div>
+          <div class="card-body">
+            <h3>Virtual DOM, Reconciliation &amp; Fiber</h3>
+            <div class="field">
+              <div class="field-label">Definition</div>
+              <div class="field-text">
+                The Virtual DOM is a lightweight JS object tree mirroring the
+                real DOM. Reconciliation is the diffing algorithm that compares
+                the new Virtual DOM tree with the previous one to compute the
+                minimal set of real DOM changes. Fiber (React 16+) is the
+                reconciler's internal data structure and engine — it breaks
+                rendering work into interruptible units.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Why we use it</div>
+              <div class="field-text">
+                Direct DOM manipulation is slow because layout/paint gets
+                recalculated on every mutation. Diffing in-memory JS objects
+                first, then batching real DOM writes, is far cheaper. Fiber
+                specifically lets React pause, abort, or prioritize rendering
+                work (e.g. yield to an urgent keystroke over a background list
+                update) — impossible with the old synchronous stack-based
+                reconciler.
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Example</div>
+              <pre><span class="cm">// Conceptual: React compares fiber trees by type + key</span>
+<span class="cm">// same type -&gt; update in place; different type -&gt; unmount + remount</span>
+&lt;<span class="tag">div</span>&gt; → &lt;<span class="tag">div</span>&gt;   <span class="cm">// diffed, attributes patched</span>
+&lt;<span class="tag">div</span>&gt; → &lt;<span class="tag">span</span>&gt;  <span class="cm">// old subtree destroyed, new one built</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COMPARISONS ================= -->
+    <section class="section" id="compare">
+      <div class="section-head">
+        <h2 style="color: var(--cyan)">04 · Crucial Comparisons</h2>
+        <span class="section-sub"
+          >// the questions every interviewer eventually asks</span
+        >
+      </div>
+      <div class="section-rule" style="--accent-color: var(--cyan)"></div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>useState vs useEffect</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>useState</th>
+              <th>useEffect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Purpose</td>
+              <td>Declares and updates a piece of local component state</td>
+              <td>
+                Runs side effects in response to render / dependency changes
+              </td>
+            </tr>
+            <tr>
+              <td>Syntax</td>
+              <td><code>const [v, setV] = useState(init)</code></td>
+              <td><code>useEffect(() =&gt; {...}, [deps])</code></td>
+            </tr>
+            <tr>
+              <td>Runs</td>
+              <td>
+                Setter call triggers a re-render immediately (state updates are
+                batched)
+              </td>
+              <td>After the DOM has committed / painted, not during render</td>
+            </tr>
+            <tr>
+              <td>Use case</td>
+              <td>
+                Form inputs, toggles, counters — data the UI directly reflects
+              </td>
+              <td>
+                Data fetching, subscriptions, timers, manually syncing with a
+                non-React system
+              </td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>Excess state causes excess re-renders of that component</td>
+              <td>
+                Missing/incorrect dependency arrays cause stale data bugs or
+                infinite loops
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>useState vs useReducer</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>useState</th>
+              <th>useReducer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Purpose</td>
+              <td>Manage a single, simple, independent value</td>
+              <td>
+                Manage complex state with multiple sub-values or interdependent
+                transitions
+              </td>
+            </tr>
+            <tr>
+              <td>Syntax</td>
+              <td><code>const [v, setV] = useState(init)</code></td>
+              <td>
+                <code>const [state, dispatch] = useReducer(reducer, init)</code>
+              </td>
+            </tr>
+            <tr>
+              <td>Update model</td>
+              <td>Direct setter call with a new value or updater function</td>
+              <td>
+                Dispatch a described action; reducer decides the next state
+              </td>
+            </tr>
+            <tr>
+              <td>Use case</td>
+              <td>Toggle, text input, counter</td>
+              <td>
+                Multi-step forms, shopping cart, undo/redo, state machines
+              </td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>Simpler, less boilerplate, fine-grained updates</td>
+              <td>
+                Centralizes logic outside the component — easier to test and
+                predict for complex flows, at the cost of more setup
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>useMemo vs useCallback</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>useMemo</th>
+              <th>useCallback</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Purpose</td>
+              <td>Memoizes a computed <em>value</em></td>
+              <td>Memoizes a <em>function reference</em></td>
+            </tr>
+            <tr>
+              <td>Syntax</td>
+              <td><code>useMemo(() =&gt; computeX(a,b), [a,b])</code></td>
+              <td><code>useCallback(() =&gt; doX(a,b), [a,b])</code></td>
+            </tr>
+            <tr>
+              <td>Returns</td>
+              <td>The result of calling the function</td>
+              <td>The function itself, uncalled</td>
+            </tr>
+            <tr>
+              <td>Use case</td>
+              <td>Expensive calculations (filtering/sorting large arrays)</td>
+              <td>
+                Stable callback identity for props passed to
+                <code>React.memo</code> children or effect dependencies
+              </td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>
+                Relation: <code>useCallback(fn, deps)</code> is equivalent to
+                <code>useMemo(() =&gt; fn, deps)</code>. Both add memory
+                overhead — don't wrap everything by default
+              </td>
+              <td>
+                Same caveat: only pays off when the reference stability actually
+                prevents downstream work
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>useEffect vs useLayoutEffect</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>useEffect</th>
+              <th>useLayoutEffect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Timing</td>
+              <td>
+                Asynchronous — runs after the browser has painted the screen
+              </td>
+              <td>
+                Synchronous — runs after DOM mutations but before the browser
+                paints
+              </td>
+            </tr>
+            <tr>
+              <td>Use case</td>
+              <td>
+                Data fetching, logging, subscriptions — anything not visually
+                blocking
+              </td>
+              <td>
+                Reading/adjusting DOM layout (measuring an element, preventing a
+                visual flicker)
+              </td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>Doesn't block painting, so the UI feels more responsive</td>
+              <td>
+                Blocks the paint until it finishes — overusing it can noticeably
+                slow perceived performance
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>Controlled vs Uncontrolled Components</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Controlled</th>
+              <th>Uncontrolled</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Source of truth</td>
+              <td>React state (<code>value</code> + <code>onChange</code>)</td>
+              <td>The DOM itself, accessed via <code>ref</code> when needed</td>
+            </tr>
+            <tr>
+              <td>Syntax</td>
+              <td><code>&lt;input value={v} onChange={...}/&gt;</code></td>
+              <td><code>&lt;input ref={r} defaultValue="x"/&gt;</code></td>
+            </tr>
+            <tr>
+              <td>Use case</td>
+              <td>
+                Real-time validation, conditional disabling, formatting as you
+                type
+              </td>
+              <td>
+                Simple forms, file inputs (always uncontrolled), quick
+                integrations with non-React code
+              </td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>Every keystroke re-renders the owning component</td>
+              <td>
+                No re-renders on typing — cheaper for very large, simple forms
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>Context API vs Redux (external state library)</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Context API</th>
+              <th>Redux</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Purpose</td>
+              <td>
+                Avoid prop drilling for relatively static/simple shared data
+              </td>
+              <td>
+                Predictable, centralized state management with strict update
+                rules for complex apps
+              </td>
+            </tr>
+            <tr>
+              <td>Syntax</td>
+              <td>
+                <code>createContext</code> + <code>Provider</code> +
+                <code>useContext</code>
+              </td>
+              <td>
+                <code>createSlice</code>/reducers + <code>store</code> +
+                <code>useSelector</code>/<code>useDispatch</code>
+              </td>
+            </tr>
+            <tr>
+              <td>Tooling</td>
+              <td>Built into React, no dev tools</td>
+              <td>Redux DevTools — time-travel debugging, action logs</td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>
+                Any Provider value change re-renders <em>all</em> consumers,
+                even ones using only part of the value — needs manual splitting
+              </td>
+              <td>
+                Selectors let components subscribe to only the state slice they
+                need, minimizing re-renders even at large scale
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>React.memo vs useMemo</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>React.memo</th>
+              <th>useMemo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>What it wraps</td>
+              <td>An entire component</td>
+              <td>A single computed value inside a component</td>
+            </tr>
+            <tr>
+              <td>Syntax</td>
+              <td><code>React.memo(MyComponent)</code></td>
+              <td><code>useMemo(() =&gt; value, [deps])</code></td>
+            </tr>
+            <tr>
+              <td>Use case</td>
+              <td>
+                Prevent a child component from re-rendering when its props
+                haven't changed
+              </td>
+              <td>
+                Prevent an expensive calculation from re-running inside a
+                component that's already re-rendering
+              </td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>
+                Comparison happens once per render at the component boundary
+              </td>
+              <td>
+                Comparison happens once per render at the value level; both are
+                wasted effort if props/deps change every render anyway
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="compare-title">
+        <span class="vs-badge">VS</span>
+        <h4>Class Components vs Functional Components</h4>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Class Components</th>
+              <th>Functional Components</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>State</td>
+              <td><code>this.state</code> + <code>this.setState()</code></td>
+              <td><code>useState</code> Hook</td>
+            </tr>
+            <tr>
+              <td>Lifecycle</td>
+              <td>
+                <code>componentDidMount</code>, <code>componentDidUpdate</code>,
+                <code>componentWillUnmount</code>
+              </td>
+              <td>
+                <code>useEffect</code> covers all three via dependency arrays
+              </td>
+            </tr>
+            <tr>
+              <td>Logic reuse</td>
+              <td>HOCs / render props (extra wrapper components)</td>
+              <td>Custom Hooks (no extra components)</td>
+            </tr>
+            <tr>
+              <td>Performance note</td>
+              <td>
+                Slightly more boilerplate; <code>this</code> binding is a common
+                bug source
+              </td>
+              <td>
+                Generally smaller bundle output and easier to optimize with
+                Hooks like <code>useMemo</code>/<code>useCallback</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      Built for placement season — study the <span>"why"</span> column twice as
+      hard as the syntax. Interviewers probe reasoning, not memorization.
+    </footer>
+  </body>
+</html>
